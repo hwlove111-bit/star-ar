@@ -35,10 +35,12 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
 .errbox{background:rgba(17,26,64,.9);border:1px solid #ff9ec7;border-radius:16px;padding:16px;max-width:380px;text-align:left;font-size:14px;line-height:1.7}
 .errbox ul{margin:6px 0 0;padding-left:18px}
 /* HUD */
-#hud{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;pointer-events:none}
+#hud{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;pointer-events:none}
 .pill{pointer-events:auto;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px;backdrop-filter:blur(6px)}
 #seasonPill{border-color:var(--acc)}
-#stamps{font-size:14px;gap:4px}
+#stamps{font-size:14px;gap:3px;padding:8px 12px;margin-left:auto}
+#toast{position:fixed;left:50%;top:calc(110px + env(safe-area-inset-top));transform:translateX(-50%);z-index:35;background:linear-gradient(120deg,#ffd98a,#ff9ec7);color:#1a1033;font-weight:900;font-size:16px;border-radius:999px;padding:11px 20px;box-shadow:0 10px 30px #0008;white-space:nowrap;animation:pop .35s ease-out}
+@keyframes pop{from{transform:translateX(-50%) scale(.6);opacity:0}}
 #stamps span{opacity:.25;filter:grayscale(1)}
 #stamps span.on{opacity:1;filter:none}
 #stamps b{margin-left:4px;color:var(--acc)}
@@ -47,6 +49,9 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
 @keyframes pulse{50%{transform:translate(-50%,-50%) scale(.95);opacity:.7}}
 #lostTip{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top));transform:translateX(-50%);z-index:9;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px;white-space:nowrap}
 #bottom{position:fixed;left:0;right:0;bottom:0;z-index:10;padding:0 10px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+@media(min-width:760px){#bottom{left:50%;right:auto;width:700px;transform:translateX(-50%)}}
+#tapHint{position:fixed;left:50%;bottom:calc(74px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:9;background:var(--panel);border:1px solid var(--acc);border-radius:999px;padding:10px 16px;font-size:15px;font-weight:800;white-space:nowrap;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateX(-50%) translateY(-5px)}}
 #chips{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
 #chips::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:10px 14px;font-size:14px;font-weight:800;cursor:pointer;display:flex;gap:6px;align-items:center}
@@ -71,16 +76,16 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
  <div class="eyebrow">CONSTELLATION AR</div>
  <h1>AR로 만나는<br>계절별 별자리</h1>
  <div class="seasons" aria-hidden="true">🌸 🌊 🍁 ❄️</div>
- <p class="lead">계절판을 카메라로 비추면<br>그 계절 밤하늘의 별자리가 떠올라요!</p>
+ <p class="lead">봄·여름·가을·겨울 밤하늘에 뜨는<br>별자리를 3D로 만나 봐요!</p>
  <ol class="steps">
-  <li><b>1</b><span>아래 버튼을 누르고 <b>카메라를 허용</b>해요.</span></li>
-  <li><b>2</b><span>부스의 계절판을 <b>화면에 꽉 차게</b> 비춰요.</span></li>
-  <li><b>3</b><span>떠오른 별자리 이름을 눌러 <b>이야기</b>를 읽어요.</span></li>
-  <li><b>4</b><span>4계절 도장을 모두 모으면 <b>탐험 완료!</b></span></li>
+  <li><b>1</b><span>위쪽에서 <b>계절</b>을 골라요.</span></li>
+  <li><b>2</b><span>떠오른 <b>별자리 이름</b>을 누르면 확대되고 이야기가 나와요.</span></li>
+  <li><b>3</b><span>손가락으로 <b>끌면</b> 밤하늘 판이 기울어져요.</span></li>
+  <li><b>4</b><span>계절마다 이야기를 읽고 <b>4계절 도장</b>을 모으면 탐험 완료!</span></li>
  </ol>
- <button class="bigbtn" id="startBtn">🔭 AR 시작하기</button>
- <button class="ghostbtn" id="previewBtn">📷 카메라 없이 미리 보기</button>
- <p class="small" id="browserTip">카메라가 안 켜지면 카카오톡·네이버 앱이 아닌 <b>크롬이나 사파리</b>로 열어 주세요.</p>
+ <button class="bigbtn" id="previewBtn">🔭 별자리 탐험 시작</button>
+ <button class="ghostbtn" id="startBtn">📷 계절판 AR로 보기</button>
+ <p class="small" id="browserTip">계절판 AR은 부스에 있는 계절판을 카메라로 비춰 보는 방법이에요.</p>
 </section>
 
 <section id="loading" class="screen hidden">
@@ -99,7 +104,7 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
   </ul>
  </div>
  <button class="bigbtn" onclick="location.reload()">다시 시도하기</button>
- <button class="ghostbtn" id="previewBtn2">카메라 없이 미리 보기</button>
+ <button class="ghostbtn" id="previewBtn2">카메라 없이 탐험하기</button>
  <p class="small" id="errDetail"></p>
 </section>
 
@@ -119,6 +124,8 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
  <div id="tabs" class="hidden"></div>
  <div class="pill" id="stamps"></div>
 </div>
+<div id="toast" class="hidden"></div>
+<div id="tapHint" class="hidden">👆 별자리 이름을 눌러 보세요</div>
 <div id="hint" class="hidden"><p>계절판을 이 틀에 맞춰 비춰 보세요</p></div>
 <div id="lostTip" class="hidden">판이 화면 밖으로 나갔어요 · 다시 비춰 주세요</div>
 <div id="bottom" class="hidden">
@@ -128,10 +135,6 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
 
 <script type="application/json" id="skydata">{"spring":{"cons":{"Leo":{"segs":[[[0.8184,0.4012],[0.8105,0.3524],[0.7737,0.3288],[0.6506,0.3453],[0.5793,0.4094],[0.657,0.3932],[0.8184,0.4012]],[[0.7737,0.3288],[0.7726,0.2919],[0.8189,0.2507],[0.8418,0.2681]]],"stars":[[0.8184,0.4012,1.36],[0.8105,0.3524,3.48],[0.7737,0.3288,2.01],[0.6506,0.3453,2.56],[0.5793,0.4094,2.14],[0.657,0.3932,3.33],[0.7726,0.2919,3.43],[0.8189,0.2507,3.88],[0.8418,0.2681,2.97]],"label":[0.747,0.3379],"top":[0.747,0.2659]},"Boo":{"segs":[[[0.3196,0.3848],[0.304,0.3749],[0.2588,0.363],[0.2399,0.2534],[0.2542,0.1783],[0.2039,0.1446],[0.1582,0.205],[0.2069,0.2794],[0.2588,0.363],[0.195,0.4071]],[[0.2542,0.1783],[0.2975,0.1095],[0.3137,0.0547],[0.2959,0.05],[0.2975,0.1095]]],"stars":[[0.3196,0.3848,4.5],[0.304,0.3749,2.68],[0.2588,0.363,-0.05],[0.2399,0.2534,3.57],[0.2542,0.1783,3.04],[0.2039,0.1446,3.49],[0.1582,0.205,3.46],[0.2069,0.2794,2.35],[0.195,0.4071,3.78],[0.2975,0.1095,4.18],[0.3137,0.0547,4.53],[0.2959,0.05,4.04]],"label":[0.254,0.2337],"top":[0.254,0.1617]},"Vir":{"segs":[[[0.5921,0.4837],[0.5833,0.5292],[0.5153,0.5545],[0.4644,0.5626],[0.3978,0.6012],[0.361,0.655],[0.2394,0.6018],[0.1728,0.5953]],[[0.4172,0.4481],[0.4318,0.5176],[0.4644,0.5626]],[[0.3978,0.6012],[0.3402,0.5534],[0.2773,0.5307],[0.1702,0.5198]]],"stars":[[0.5921,0.4837,4.04],[0.5833,0.5292,3.59],[0.5153,0.5545,3.89],[0.4644,0.5626,2.74],[0.3978,0.6012,4.38],[0.361,0.655,0.98],[0.2394,0.6018,4.07],[0.1728,0.5953,3.87],[0.4172,0.4481,2.85],[0.4318,0.5176,3.39],[0.3402,0.5534,3.38],[0.2773,0.5307,4.23],[0.1702,0.5198,3.73]],"label":[0.3817,0.5502],"top":[0.4981,0.5502]}},"ast":[[0.5793,0.4094],[0.2588,0.363],[0.361,0.655]],"named":[[0.8184,0.4012,"레굴루스"],[0.5793,0.4094,"데네볼라"],[0.2588,0.363,"아르크투루스"],[0.361,0.655,"스피카"]]},"summer":{"cons":{"Lyr":{"segs":[[[0.8294,0.2093],[0.8277,0.1885],[0.8436,0.1951],[0.8294,0.2093],[0.8103,0.2186],[0.8047,0.2625],[0.8231,0.2539],[0.8294,0.2093]]],"stars":[[0.8294,0.2093,4.34],[0.8277,0.1885,4.59],[0.8436,0.1951,0.03],[0.8103,0.2186,4.22],[0.8047,0.2625,3.25],[0.8231,0.2539,3.52]],"label":[0.8231,0.1713],"top":[0.8231,0.0993]},"Cyg":{"segs":[[[0.5114,0.2681],[0.5766,0.2405],[0.6347,0.1828],[0.7091,0.1374],[0.7361,0.0682],[0.756,0.05]],[[0.6057,0.1255],[0.6347,0.1828],[0.6829,0.2401],[0.737,0.3136]]],"stars":[[0.5114,0.2681,3.21],[0.5766,0.2405,2.48],[0.6347,0.1828,2.23],[0.7091,0.1374,2.86],[0.7361,0.0682,3.76],[0.756,0.05,3.8],[0.6057,0.1255,1.25],[0.6829,0.2401,3.89],[0.737,0.3136,3.05]],"label":[0.6611,0.0907],"top":[0.5447,0.0907]},"Aql":{"segs":[[[0.6988,0.4908],[0.6868,0.5087],[0.6745,0.5342],[0.6294,0.61],[0.6807,0.5917],[0.7527,0.5695],[0.8015,0.4557],[0.6868,0.5087],[0.7527,0.5695],[0.8064,0.655]]],"stars":[[0.6988,0.4908,2.72],[0.6868,0.5087,0.76],[0.6745,0.5342,3.71],[0.6294,0.61,3.24],[0.6807,0.5917,3.87],[0.7527,0.5695,3.36],[0.8015,0.4557,2.99],[0.8064,0.655,3.43]],"label":[0.7163,0.6019],"top":[0.8461,0.6019]}},"ast":[[0.8436,0.1951],[0.6057,0.1255],[0.6868,0.5087]],"named":[[0.8436,0.1951,"베가 (직녀별)"],[0.6057,0.1255,"데네브"],[0.6868,0.5087,"알타이르 (견우별)"]]},"autumn":{"cons":{"Peg":{"segs":[[[0.6699,0.372],[0.6048,0.416],[0.5615,0.4435],[0.4176,0.4369],[0.399,0.5789],[0.5711,0.576],[0.6203,0.6035],[0.6355,0.6163],[0.7264,0.655],[0.7898,0.6011]],[[0.5711,0.576],[0.5615,0.4435],[0.5969,0.4754],[0.6064,0.4849],[0.6954,0.4502],[0.7465,0.4338]]],"stars":[[0.6699,0.372,4.28],[0.6048,0.416,2.93],[0.5615,0.4435,2.44],[0.4176,0.4369,2.07],[0.399,0.5789,2.83],[0.5711,0.576,2.49],[0.6203,0.6035,4.2],[0.6355,0.6163,3.41],[0.7264,0.655,3.52],[0.7898,0.6011,2.38],[0.5969,0.4754,3.51],[0.6064,0.4849,3.97],[0.6954,0.4502,3.77],[0.7465,0.4338,4.14]],"label":[0.6172,0.4202],"top":[0.6172,0.3482]},"And":{"segs":[[[0.2102,0.2551],[0.2952,0.3542],[0.3513,0.4131],[0.4176,0.4369]],[[0.3002,0.4832],[0.3246,0.4778],[0.3511,0.429],[0.3513,0.4131],[0.3602,0.3849],[0.4812,0.2947],[0.5492,0.2992]],[[0.4812,0.2947],[0.4768,0.2839],[0.4814,0.2622]],[[0.2952,0.3542],[0.3271,0.3304],[0.3452,0.3068],[0.3225,0.2373],[0.2787,0.2094]],[[0.4768,0.2839],[0.4665,0.2628]]],"stars":[[0.2102,0.2551,2.1],[0.2952,0.3542,2.07],[0.3513,0.4131,3.27],[0.4176,0.4369,2.07],[0.3002,0.4832,4.4],[0.3246,0.4778,4.08],[0.3511,0.429,4.34],[0.3602,0.3849,4.34],[0.4812,0.2947,4.29],[0.5492,0.2992,3.62],[0.4768,0.2839,4.15],[0.4814,0.2622,3.81],[0.3271,0.3304,3.86],[0.3452,0.3068,4.53],[0.3225,0.2373,4.26],[0.2787,0.2094,3.59],[0.4665,0.2628,4.97]],"label":[0.3729,0.3365],"top":[0.3729,0.2645]},"Cas":{"segs":[[[0.3166,0.05],[0.3365,0.0985],[0.375,0.1042],[0.388,0.152],[0.4349,0.1301]]],"stars":[[0.3166,0.05,3.35],[0.3365,0.0985,2.66],[0.375,0.1042,2.15],[0.388,0.152,2.24],[0.4349,0.1301,2.28]],"label":[0.3702,0.107],"top":[0.5402,0.107]}},"ast":[[0.5615,0.4435],[0.4176,0.4369],[0.399,0.5789],[0.5711,0.576]],"named":[[0.4176,0.4369,"알페라츠"],[0.5711,0.576,"마르카브"]]},"winter":{"cons":{"Ori":{"segs":[[[0.6801,0.1168],[0.7183,0.05],[0.6909,0.0517],[0.6673,0.1235],[0.6951,0.1781],[0.7163,0.2047],[0.8048,0.217],[0.8941,0.1703]],[[0.884,0.2721],[0.8969,0.2634],[0.9059,0.2252],[0.9099,0.2088],[0.9072,0.1853],[0.8941,0.1703],[0.8888,0.1295],[0.8639,0.107],[0.8488,0.1051]],[[0.8352,0.3899],[0.8066,0.3207],[0.7845,0.2958],[0.8048,0.217],[0.775,0.1745],[0.7163,0.2047],[0.7587,0.3151],[0.7377,0.4061]],[[0.7587,0.3151],[0.7721,0.3064],[0.7845,0.2958]]],"stars":[[0.6801,0.1168,4.42],[0.7183,0.05,4.39],[0.6909,0.0517,4.64],[0.6673,0.1235,4.45],[0.6951,0.1781,4.12],[0.7163,0.2047,0.45],[0.8048,0.217,1.64],[0.8941,0.1703,4.64],[0.884,0.2721,4.47],[0.8969,0.2634,3.71],[0.9059,0.2252,3.68],[0.9099,0.2088,3.19],[0.9072,0.1853,4.35],[0.8888,0.1295,4.06],[0.8639,0.107,4.65],[0.8488,0.1051,4.81],[0.8352,0.3899,0.18],[0.8066,0.3207,3.35],[0.7845,0.2958,2.25],[0.775,0.1745,3.39],[0.7587,0.3151,1.74],[0.7377,0.4061,2.07],[0.7721,0.3064,1.69]],"label":[0.8018,0.1594],"top":[0.8018,0.0874]},"CMa":{"segs":[[[0.6374,0.5051],[0.5726,0.4919],[0.5257,0.5813],[0.5128,0.6142],[0.5329,0.6321],[0.5424,0.6445],[0.6474,0.653]],[[0.4723,0.655],[0.5128,0.6142]],[[0.5726,0.4919],[0.541,0.4972],[0.518,0.4809],[0.5444,0.4365],[0.541,0.4972]]],"stars":[[0.6374,0.5051,1.98],[0.5726,0.4919,-1.44],[0.5257,0.5813,3.02],[0.5128,0.6142,1.83],[0.5329,0.6321,3.49],[0.5424,0.6445,1.5],[0.6474,0.653,3.02],[0.4723,0.655,2.45],[0.541,0.4972,4.36],[0.518,0.4809,4.11],[0.5444,0.4365,4.08]],"label":[0.5497,0.6129],"top":[0.6661,0.6129]},"CMi":{"segs":[[[0.4051,0.229],[0.443,0.1917]]],"stars":[[0.4051,0.229,0.4],[0.443,0.1917,2.89]],"label":[0.424,0.2103],"top":[0.424,0.1383]}},"ast":[[0.7163,0.2047],[0.5726,0.4919],[0.4051,0.229]],"named":[[0.7163,0.2047,"베텔게우스"],[0.8352,0.3899,"리겔"],[0.5726,0.4919,"시리우스"],[0.4051,0.229,"프로키온"]]}}</script>
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js","three/addons/":"./lib/addons/","mindar-image-three":"./lib/mindar/mindar-image-three.prod.js"}}</script>
-<script>
-// 카카오톡 인앱 브라우저는 카메라가 막혀 있어서 기본 브라우저로 넘겨요.
-(function(){var ua=navigator.userAgent||"";if(/KAKAOTALK/i.test(ua)&&!/openExternal/.test(location.hash)){location.href="kakaotalk://web/openExternal?url="+encodeURIComponent(location.href.split("#")[0]);}})();
-</script>
 <script type="module">
 import * as THREE from 'three';
 import { MindARThree } from 'mindar-image-three';
@@ -181,8 +184,12 @@ function addStamp(s) {
   stamps.push(s);
   try { localStorage.setItem('ar-season-stamps', JSON.stringify(stamps)); } catch (e) {}
   renderStamps();
-  if (stamps.length === 4) setTimeout(() => show($('done')), 5200);
+  toast(`${SEASON[s].emo} ${SEASON[s].name} 도장 획득! (${stamps.length}/4)`);
+  if (stamps.length === 4) { if (MODE === 'ar') setTimeout(() => show($('done')), 5200); else pendingDone = true; }
 }
+let MODE = null, pendingDone = false, toastTimer = null;
+function toast(msg) { const t = $('toast'); t.textContent = msg; show(t, false); void t.offsetWidth; show(t); clearTimeout(toastTimer); toastTimer = setTimeout(() => show(t, false), 2200); }
+function maybeDone() { if (pendingDone) { pendingDone = false; setTimeout(() => show($('done')), 350); } }
 $('doneBtn').onclick = () => show($('done'), false);
 
 /* ---------- 텍스처 ---------- */
@@ -291,6 +298,9 @@ let mindar, clock = new THREE.Clock(), current = null, lostTimer = null;
 const lostAt = {};
 
 async function startAR() {
+  // 카카오톡 인앱 브라우저는 카메라가 막혀 있어서, AR을 누를 때만 기본 브라우저로 넘겨요.
+  if (/KAKAOTALK/i.test(navigator.userAgent || '')) { location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href.split('#')[0]); return; }
+  MODE = 'ar';
   show($('start'), false); show($('loading'));
   if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     return fail('이 브라우저에서는 카메라를 쓸 수 없어요. https 주소로, 크롬이나 사파리에서 열어 주세요.');
@@ -327,6 +337,7 @@ $('startBtn').onclick = startAR;
 
 /* ---------- 카메라 없이 미리 보기 ---------- */
 async function startPreview() {
+  MODE = 'preview';
   show($('start'), false); show($('error'), false); show($('loading'), false);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -338,19 +349,42 @@ async function startPreview() {
   const loader = new THREE.TextureLoader();
   ORDER.forEach(key => {
     buildSeason(key);
-    const tex = loader.load(`./boards/${key}.jpg`); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+    const tex = loader.load(`./boards/${key}.jpg?v=2`); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, BH), new THREE.MeshBasicMaterial({ map: tex }));
     plane.visible = false; seasons[key].plane = plane; board.add(plane); board.add(seasons[key].group);
   });
-  function fit() {
-    const w = window.innerWidth, h = window.innerHeight;
-    renderer.setSize(w, h); camera.aspect = w / h;
-    const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
-    const d = Math.max((BH * 1.15 / 2) / tv, (1.06 / 2) / (tv * camera.aspect));
-    const shift = w < h ? 0.28 * d * tv : 0.08 * d * tv;  // 세로 화면: 판을 위쪽으로
-    camera.position.set(0, -shift, d); camera.lookAt(0, -shift, 0); camera.updateProjectionMatrix();
+  const tv = () => Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  function resize() { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); }
+  resize(); window.addEventListener('resize', resize);
+
+  // 보이는 영역(위쪽 HUD ~ 아래쪽 칩/설명창 사이)에 목표 상자를 맞추는 카메라 위치
+  function band() {
+    const h = window.innerHeight, top = $('hud').getBoundingClientRect().bottom + 6;
+    const hintEl = $('tapHint'), hintTop = hintEl.classList.contains('hidden') ? 1e9 : hintEl.getBoundingClientRect().top;
+    const bot = Math.max(top + 80, Math.min($('chips').getBoundingClientRect().top, hintTop) - 6);
+    return { ny: 1 - (top + bot) / h, half: (bot - top) / h };
   }
-  fit(); window.addEventListener('resize', fit);
+  function focusBox(key) {
+    const d = SKY[current]; let pts = [];
+    if (!key) return { cx: 0.5, cy: BH / 2, w: 0.98, h: BH * 1.04 };
+    if (key === 'ast') pts = d.ast.slice();
+    else { const c = d.cons[key]; c.segs.forEach(sg => pts.push(...sg)); pts.push(c.label, c.top); }
+    const us = pts.map(p => p[0]), vs = pts.map(p => p[1]);
+    const u0 = Math.min(...us), u1 = Math.max(...us), v0 = Math.min(...vs), v1 = Math.max(...vs);
+    return { cx: (u0 + u1) / 2, cy: (v0 + v1) / 2, w: Math.max(u1 - u0, 0.14) + 0.1, h: Math.max(v1 - v0, 0.1) + 0.1 };
+  }
+  const camPos = new THREE.Vector3(0, 0, 3), camLook = new THREE.Vector3(), wantPos = new THREE.Vector3(), wantLook = new THREE.Vector3();
+  function aim(snap) {
+    const S = seasons[current], bx = focusBox(S && S.focus), b = band(), t = tv(), asp = camera.aspect;
+    const dW = (bx.w / 2) / (0.92 * t * asp), dH = (bx.h / 2) / (Math.max(0.15, b.half) * 0.92 * t);
+    const d = Math.max(0.22, Math.max(dW, dH));
+    const target = board.localToWorld(bp(bx.cx, bx.cy, 0));
+    wantLook.set(target.x, target.y - b.ny * d * t, target.z);
+    wantPos.set(wantLook.x, wantLook.y, target.z + d);
+    if (snap) { camPos.copy(wantPos); camLook.copy(wantLook); }
+    camPos.lerp(wantPos, 0.08); camLook.lerp(wantLook, 0.08);
+    camera.position.copy(camPos); camera.lookAt(camLook);
+  }
   // 끌어서 기울이기
   let drag = null, rx = -0.3, ry = 0, trx = -0.3, try_ = 0, lastMove = -10;
   $('ar').addEventListener('pointerdown', e => { drag = [e.clientX, e.clientY, trx, try_]; });
@@ -358,14 +392,19 @@ async function startPreview() {
   window.addEventListener('pointerup', () => { drag = null; });
   $('tabs').innerHTML = ORDER.map(k => `<button data-s="${k}">${SEASON[k].emo} ${SEASON[k].name}</button>`).join('');
   $('tabs').querySelectorAll('button').forEach(b => b.onclick = () => selectSeason(b.dataset.s));
-  show($('seasonPill'), false); show($('stamps'), false); show($('tabs')); show($('hud')); show($('bottom'));
+  show($('seasonPill'), false); show($('tabs')); show($('stamps')); show($('hud')); show($('bottom')); renderStamps();
+  show($('tapHint'));
   setupTap(renderer, camera);
   selectSeason(new URLSearchParams(location.search).get('season') || 'spring');
+  aim(true);
   renderer.setAnimationLoop(() => {
-    const t = clock.getElapsedTime(), idle = t - lastMove > 3 && !drag;
-    if (idle) { trx += (-0.3 + 0.06 * Math.sin(t * 0.6) - trx) * 0.02; try_ += (0.12 * Math.sin(t * 0.4) - try_) * 0.02; }
-    rx += (trx - rx) * 0.15; ry += (try_ - ry) * 0.15; board.rotation.set(rx, ry, 0);
-    tick(); renderer.render(scene, camera);
+    const t = clock.getElapsedTime(), idle = t - lastMove > 3 && !drag, focused = !!(current && seasons[current].focus);
+    if (idle) {
+      const bx = focused ? -0.12 : -0.3 + 0.06 * Math.sin(t * 0.6), by = focused ? 0.04 * Math.sin(t * 0.4) : 0.12 * Math.sin(t * 0.4);
+      trx += (bx - trx) * 0.03; try_ += (by - try_) * 0.03;
+    }
+    rx += (trx - rx) * 0.15; ry += (try_ - ry) * 0.15; board.rotation.set(rx, ry, 0); board.updateMatrixWorld();
+    aim(false); tick(); renderer.render(scene, camera);
   });
   window.__preview = true;
 }
@@ -412,7 +451,8 @@ function setFocus(k) {
   seasons[current].focus = k;
   $('chips').querySelectorAll('.chip').forEach(b => b.classList.toggle('on', b.dataset.k === k));
   const sh = $('sheet');
-  if (!k) { show(sh, false); return; }
+  if (!k) { show(sh, false); maybeDone(); return; }
+  if (MODE === 'preview') { addStamp(current); show($('tapHint'), false); }
   const meta = SEASON[current];
   const info = k === 'ast'
     ? { emo: '✨', name: meta.astName, sub: `${meta.name}의 별자리를 잇는 길잡이`, text: AST[current], find: `언제 볼까: ${meta.when}` }
@@ -436,6 +476,7 @@ function setupTap(renderer, camera) {
     const objs = seasons[current].items.filter(it => it.click && it.obj.visible).map(it => it.obj);
     const hit = ray.intersectObjects(objs, false)[0];
     if (hit) { const it = seasons[current].items.find(x => x.obj === hit.object); setFocus(it.click); }
+    else if (MODE === 'preview' && seasons[current].focus) setFocus(null);
   });
 }
 
