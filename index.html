@@ -81,11 +81,9 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
   <li><b>1</b><span>위쪽에서 <b>계절</b>을 골라요.</span></li>
   <li><b>2</b><span>떠오른 <b>별자리 이름</b>을 누르면 확대되고 이야기가 나와요.</span></li>
   <li><b>3</b><span>손가락으로 <b>끌면</b> 밤하늘 판이 기울어져요.</span></li>
-  <li><b>4</b><span>계절마다 이야기를 읽고 <b>4계절 도장</b>을 모으면 탐험 완료!</span></li>
+  <li><b>4</b><span>계절마다 <b>이야기</b>를 읽어보세요.</span></li>
  </ol>
  <button class="bigbtn" id="previewBtn">🔭 별자리 탐험 시작</button>
- <button class="ghostbtn" id="startBtn">📷 계절판 AR로 보기</button>
- <p class="small" id="browserTip">계절판 AR은 부스에 있는 계절판을 카메라로 비춰 보는 방법이에요.</p>
 </section>
 
 <section id="loading" class="screen hidden">
@@ -137,7 +135,6 @@ h1{margin:0;font-size:clamp(28px,8vw,40px);line-height:1.2;letter-spacing:-1px}
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js","three/addons/":"./lib/addons/","mindar-image-three":"./lib/mindar/mindar-image-three.prod.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
-import { MindARThree } from 'mindar-image-three';
 
 const SKY = JSON.parse(document.getElementById('skydata').textContent);
 const ORDER = ['spring', 'summer', 'autumn', 'winter'];
@@ -306,6 +303,7 @@ async function startAR() {
     return fail('이 브라우저에서는 카메라를 쓸 수 없어요. https 주소로, 크롬이나 사파리에서 열어 주세요.');
   }
   try {
+    const { MindARThree } = await import('mindar-image-three');
     mindar = new MindARThree({
       container: $('ar'), imageTargetSrc: './targets.mind', maxTrack: 1,
       uiLoading: 'no', uiScanning: 'no', uiError: 'no',
@@ -333,7 +331,7 @@ function fail(msg) {
   show($('loading'), false); show($('start'), false); show($('error'));
   $('errDetail').textContent = msg ? '오류: ' + msg : '';
 }
-$('startBtn').onclick = startAR;
+if ($('startBtn')) $('startBtn').onclick = startAR;
 
 /* ---------- 카메라 없이 미리 보기 ---------- */
 async function startPreview() {
