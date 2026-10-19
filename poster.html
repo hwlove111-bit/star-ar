@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>부스 QR 포스터</title>
+<style>
+@page{size:A4 portrait;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;background:#dfe3ee;font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#0d1333}
+.bar{display:flex;gap:10px;justify-content:center;align-items:center;padding:14px;flex-wrap:wrap}
+.bar button{border:0;border-radius:999px;padding:12px 22px;font-size:16px;font-weight:800;background:#1b2a6b;color:#fff;cursor:pointer}
+.bar span{font-size:13px;color:#444}
+.page{width:210mm;height:297mm;margin:0 auto 20px;background:radial-gradient(ellipse at 50% 0,#2a3c7c 0,#121b46 45%,#070b22 85%);color:#f4f6ff;display:flex;flex-direction:column;align-items:center;padding:20mm 18mm 16mm;position:relative;overflow:hidden}
+.page:before{content:"";position:absolute;inset:0;opacity:.55;background-image:radial-gradient(2px 2px at 20% 30%,#fff 50%,transparent 60%),radial-gradient(1.4px 1.4px at 75% 16%,#fff 50%,transparent 60%),radial-gradient(1.4px 1.4px at 90% 65%,#fff 50%,transparent 60%),radial-gradient(2px 2px at 12% 82%,#9fdcff 50%,transparent 60%),radial-gradient(1.4px 1.4px at 55% 70%,#fff 50%,transparent 60%);background-size:60mm 50mm}
+.page>*{position:relative}
+.eyebrow{font-size:13pt;letter-spacing:4px;color:#7de7ff;font-weight:800}
+h1{margin:4mm 0 2mm;font-size:38pt;line-height:1.15;text-align:center;letter-spacing:-1px}
+.seasons{font-size:24pt;letter-spacing:6px;margin-bottom:6mm}
+.qr{background:#fff;border-radius:8mm;padding:7mm;box-shadow:0 0 0 2mm #ffd98a}
+.qr svg{display:block;width:80mm;height:80mm}
+.url{margin-top:4mm;font-size:11pt;color:#c9d4f5;word-break:break-all;text-align:center}
+ol{list-style:none;margin:8mm 0 0;padding:0;width:100%;display:grid;gap:3.2mm}
+li{display:flex;gap:4mm;align-items:center;background:rgba(17,26,64,.85);border:1px solid #33437a;border-radius:5mm;padding:3.4mm 5mm;font-size:15pt;line-height:1.4}
+li b.n{flex:0 0 10mm;height:10mm;border-radius:50%;background:#ffd98a;color:#1a1033;display:flex;align-items:center;justify-content:center;font-size:14pt}
+.foot{margin-top:auto;font-size:10.5pt;color:#9fb0dd;text-align:center;line-height:1.6}
+@media print{html,body{background:none}.bar{display:none}.page{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="bar"><button onclick="window.print()">🖨 인쇄하기 (A4 세로)</button><span>인쇄 창에서 ‘배경 그래픽’을 켜 주세요.</span></div>
+<div class="page">
+ <div class="eyebrow">CONSTELLATION AR</div>
+ <h1>AR로 만나는<br>계절별 별자리</h1>
+ <div class="seasons">🌸 🌊 🍁 ❄️</div>
+ <div class="qr" id="qr"></div>
+ <div class="url" id="url"></div>
+ <ol>
+  <li><b class="n">1</b><span>휴대폰 <b>카메라 앱</b>으로 QR을 찍어요</span></li>
+  <li><b class="n">2</b><span><b>AR 시작하기</b>를 누르고 카메라를 <b>허용</b>해요</span></li>
+  <li><b class="n">3</b><span>계절판을 <b>화면에 꽉 차게</b> 비춰요</span></li>
+  <li><b class="n">4</b><span>4계절 도장을 모으면 <b>탐험 완료!</b> 🎉</span></li>
+ </ol>
+ <div class="foot">카카오톡·네이버 앱에서 열리면 ‘다른 브라우저로 열기’를 눌러 주세요.<br>크롬(안드로이드)·사파리(아이폰)에서 가장 잘 돼요.</div>
+</div>
+<script src="./lib/qrcode.js"></script>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search).get('url');
+  var url = p || new URL('./', location.href).href;
+  var qr = qrcode(0, 'M'); qr.addData(url); qr.make();
+  document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+  document.getElementById('url').textContent = url;
+})();
+</script>
+</body>
+</html>
